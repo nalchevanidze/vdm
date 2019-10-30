@@ -1,0 +1,11 @@
+<launch>
+    <arg name="model"/>
+    <arg name="gui" default="false"/>
+    <param name="robot_description" textfile="$(find vdm)/urdf/line.urdf" />
+    <node 
+       name="rviz" 
+       pkg="rviz" 
+       type="rviz"
+       required="true"   
+    />
+</launch>
