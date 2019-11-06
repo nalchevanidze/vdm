@@ -18,11 +18,16 @@ class LineJointStatePublisher:
         msg = JointState()
         msg.name=["joint1"]
 
+        r = rospy.Rate(100)
         while not rospy.is_shutdown():
-            sin = 2 * math.sin(time.clock())
+            sin = 2 * math.sin(rospy.Time().now().to_sec())
+            cosine = 2 * math.cos(rospy.Time().now().to_sec())
             msg.header.stamp=rospy.get_rostime()
             msg.position=[sin]
+            msg.velocity=[-cosine]
+            msg.effort=[-sin]
             self.js_pub.publish(msg)
+            r.sleep()
 
 
 if __name__ == "__main__":
