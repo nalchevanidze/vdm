@@ -3,15 +3,15 @@
     <param name="use_gui" value="true"/>
 
     <node
-        name="joint_state_publisher"
-        pkg="joint_state_publisher"
-        type="joint_state_publisher"
-        required="true"
-    />
-    <node
         name="robot_state_publisher"
         pkg="robot_state_publisher"
         type="robot_state_publisher"
+        required="true"
+    />
+    <node
+        name="multi_joint_publisher"
+        pkg="vdm"
+        type="multi_joint_publisher.py"
         required="true"
     />
     
