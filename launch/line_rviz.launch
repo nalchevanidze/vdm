@@ -1,7 +1,7 @@
 <launch>
     <arg name="model"/>
     <arg name="gui" default="false"/>
-    <param name="robot_description" textfile="$(find visualization-of-dynamical-model)/urdf/line.urdf" />
+    <param name="robot_description" textfile="$(find vdm)/urdf/line.urdf" />
     <!--<node
         name="joint_state_publisher"
         pkg="joint_state_publisher"
@@ -14,6 +14,13 @@
         type="robot_state_publisher"
         required="true"
     />
+    <node
+        name="line_joint_state_publisher"
+        pkg="vdm"
+        type="line_joint_state_publisher.py"
+        required="true"
+    />
+
     <node 
         name="rviz" 
         pkg="rviz" 
