@@ -14,17 +14,13 @@ as follows (assuming you're using bash)
 
 ###### .bashrc
 
-```
+```bash
 source /opt/ros/kinetic/setup.bash
 source ~/{catkin_project_dir}/devel/setup.bash
 ```
 
 # laounch
 
-```
-roscore
-```
-
-```
-rosrun vdm
+```bash
+roslaunch launch/line_rviz.launch
 ```
