@@ -43,6 +43,10 @@ go to: 'src/vdm'
 roslaunch launch/line_rviz.launch
 ```
 
+that opens rviz:
+
+- add and robot model
+
 ## About
 
 ### team
