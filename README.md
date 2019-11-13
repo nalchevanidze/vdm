@@ -9,10 +9,26 @@ Uni hamburg project Robocup
 
 ## get started
 
-set env variables to your terminal,
-as follows (assuming you're using bash)
+### setup
 
-###### .bashrc
+```zsh
+mkdir visual-dynamic-model
+cd visual-dynamic-model
+mkdir src
+cd src
+git clone git@github.com:nalchevanidze/vdm.git
+cd ../
+
+catkin init
+# adds env variables to your terminal
+source /opt/ros/kinetic/setup.<zsh | sh .... >
+catkin build
+source devel/setup.<zsh | sh .... >
+```
+
+if you want not to set env variables every time you open the shell, you can write it in your
+
+###### .<bash | zsh >rc
 
 ```bash
 source /opt/ros/kinetic/setup.bash
@@ -20,6 +36,8 @@ source ~/{catkin_project_dir}/devel/setup.bash
 ```
 
 # launch
+
+go to: 'src/vdm'
 
 ```bash
 roslaunch launch/line_rviz.launch
