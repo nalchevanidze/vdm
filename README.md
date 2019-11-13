@@ -19,8 +19,17 @@ source /opt/ros/kinetic/setup.bash
 source ~/{catkin_project_dir}/devel/setup.bash
 ```
 
-# laounch
+# launch
 
 ```bash
 roslaunch launch/line_rviz.launch
 ```
+
+## About
+
+### team
+
+vdm is written and maintained by
+
+- @nalchevanidze
+- @haukesomm
