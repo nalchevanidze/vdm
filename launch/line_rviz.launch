@@ -20,6 +20,12 @@
         type="line_joint_state_publisher.py"
         required="true"
     />
+    <node
+        name="line_marker_publisher"
+        pkg="vdm"
+        type="line_marker_publisher.py"
+        required="true"
+    />
 
     <node 
         name="rviz" 
