@@ -31,5 +31,5 @@ roslaunch launch/line_rviz.launch
 
 vdm is written and maintained by
 
-- @nalchevanidze
-- @haukesomm
+- [nalchevanidze](https://github.com/nalchevanidze)
+- [haukesomm](https://github.com/haukesomm)
