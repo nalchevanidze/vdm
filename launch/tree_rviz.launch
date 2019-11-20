@@ -1,24 +1,5 @@
 <launch>
-    <param name="robot_description" textfile="$(find vdm)/urdf/tree.urdf"/>
     <param name="use_gui" value="true"/>
 
-    <node
-        name="robot_state_publisher"
-        pkg="robot_state_publisher"
-        type="robot_state_publisher"
-        required="true"
-    />
-    <node
-        name="multi_joint_publisher"
-        pkg="vdm"
-        type="multi_joint_publisher.py"
-        required="true"
-    />
-    
-    <node 
-        name="rviz" 
-        pkg="rviz" 
-        type="rviz"
-        required="true"   
-    />
+    <include file="$(find wolfgang_moveit_config)/launch/demo.launch" />
 </launch>
