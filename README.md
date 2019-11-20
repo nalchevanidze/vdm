@@ -27,27 +27,20 @@ catkin build
 source devel/setup.<zsh | sh .... >
 ```
 
-if you want not to set env variables every time you open the shell, you can write it in your
-
-###### .<bash | zsh >rc
+if you want not to set env variables every time you open the shell, you can write it in your `.<bash | zsh >rc`
 
 ```bash
 source /opt/ros/kinetic/setup.bash
-source ~/{catkin_project_dir}/devel/setup.bash
+source [catkin_project_dir]/devel/setup.bash
 ```
 
 ## Launch
 
-go to: 'src/vdm'
+Change into `src/vdm` and execute your desired launch-file:
 
 ```bash
-roslaunch launch/line_rviz.launch
+roslaunch launch/[name].launch
 ```
-
-that opens rviz:
-
-- add and robot model
-
 
 ## Known Problems
 
@@ -55,16 +48,15 @@ It may be possible that rviz does not properly visualize the geometry of your
 robot model (it might for example be invisible).
 According to [the ROS forum](https://answers.ros.org/question/271357/rviz-doesnt-show-any-shape/) it can be fixed by adding the following line to your `.bashrc`:
 
-```
+```bash
 export LC_NUMERIC="en_US.UTF-8"
 ```
 
-
 ## About
 
-### team
+### Team
 
-vdm is written and maintained by
+VDM is written and maintained by:
 
 - [nalchevanidze](https://github.com/nalchevanidze)
 - [haukesomm](https://github.com/haukesomm)
