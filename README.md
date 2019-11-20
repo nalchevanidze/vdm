@@ -1,15 +1,16 @@
-# Visualization-of-dynamical-model
+# VDM (visualization-of-dynamical-model)
 
-Uni hamburg project Robocup
+RoboCup project visualizing acting forces on arbitrary urdf-robot-models in
+rviz.
 
-## requirments
+## Requirments
 
 - rviz
 - ros
 
-## get started
+## Getting Started
 
-### setup
+### Setup
 
 ```zsh
 mkdir visual-dynamic-model
@@ -35,7 +36,7 @@ source /opt/ros/kinetic/setup.bash
 source ~/{catkin_project_dir}/devel/setup.bash
 ```
 
-# launch
+## Launch
 
 go to: 'src/vdm'
 
@@ -47,7 +48,8 @@ that opens rviz:
 
 - add and robot model
 
-## troubleshooting
+
+## Known Problems
 
 It may be possible that rviz does not properly visualize the geometry of your
 robot model (it might for example be invisible).
@@ -58,7 +60,7 @@ export LC_NUMERIC="en_US.UTF-8"
 ```
 
 
-# About
+## About
 
 ### team
 
