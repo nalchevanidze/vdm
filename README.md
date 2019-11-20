@@ -40,7 +40,10 @@ source ~/{catkin_project_dir}/devel/setup.bash
 go to: 'src/vdm'
 
 ```bash
-roslaunch launch/line_rviz.launch
+roslaunch vdm main.launch
+# and
+rosrun vdm jacobian
+
 ```
 
 that opens rviz:
@@ -55,3 +58,4 @@ vdm is written and maintained by
 
 - [nalchevanidze](https://github.com/nalchevanidze)
 - [haukesomm](https://github.com/haukesomm)
+
