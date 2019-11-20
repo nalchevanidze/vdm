@@ -47,7 +47,20 @@ that opens rviz:
 
 - add and robot model
 
-## About
+## troubleshooting
+
+It may be possible that rviz does not properly visualize the geometry of your
+robot model (it might for example be invisible).
+According to [the ROS forum]
+(https://answers.ros.org/question/271357/rviz-doesnt-show-any-shape/) it can be
+fixed by adding the following line to your `.bashrc`:
+
+```
+export LC_NUMERIC="en_US.UTF-8"
+```
+
+
+# About
 
 ### team
 
