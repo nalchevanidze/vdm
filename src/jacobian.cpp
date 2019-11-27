@@ -28,12 +28,14 @@ int main(int argc, char** argv) {
     Eigen::Vector3d reference_point_position(0.0, 0.0, 0.0);
     Eigen::MatrixXd jacobian;
 
-    const std::vector<robot_model::JointModel*>& joint_models = kinematic_model->getJointModels();
+    const std::vector<JointModel*>& joint_models = kinematic_model->getJointModels();
 
     
     for (std::size_t i = 0; i < joint_models.size(); ++i)
     {
         const JointModel* jointModel = joint_models[i];
+
+
 
         ROS_INFO("Joint: %s", jointModel->getName().c_str());
     }
