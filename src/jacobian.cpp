@@ -37,17 +37,17 @@ int main(int argc, char** argv) {
         }
     }
 
-    moveit::planning_interface::MoveGroupInterface move_group_left_leg("LeftLeg");
-
-    RobotStatePtr kinematic_state = move_group_left_leg.getCurrentState();
-
-
     // filters out only chained gruops
     for(int i = 0; i < chainedModelGroups.size(); i ++ )
     {
         JointModelGroup *currentJointGroup = chainedModelGroups[i];
 
         string endpoint = currentJointGroup->getLinkModelNames().back();
+        string joint_group_name = currentJointGroup->getName();
+
+        moveit::planning_interface::MoveGroupInterface current_move_group(joint_group_name);
+
+        RobotStatePtr kinematic_state = current_move_group.getCurrentState();
 
         Eigen::Vector3d reference_point_position(0.0, 0.0, 0.0);
         Eigen::MatrixXd jacobian;
