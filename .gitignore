@@ -1,0 +1,3 @@
+# IntelliJ-CLion-specific:
+.idea/
+cmake-build-debug/
