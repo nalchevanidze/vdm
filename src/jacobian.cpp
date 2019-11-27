@@ -5,6 +5,8 @@
 #include <moveit/robot_model/robot_model.h>
 #include <moveit/robot_state/robot_state.h>
 
+using namespace robot_model;
+
 int main(int argc, char** argv) {
     ros::init(argc, argv, "jacobian_calculator");
     ros::AsyncSpinner spinner(1);
@@ -26,12 +28,14 @@ int main(int argc, char** argv) {
     Eigen::Vector3d reference_point_position(0.0, 0.0, 0.0);
     Eigen::MatrixXd jacobian;
 
-    const std::vector<robot_model::JointModel*>& joint_names = kinematic_model->getJointModels();
+    const std::vector<robot_model::JointModel*>& joint_models = kinematic_model->getJointModels();
 
     
-    for (std::size_t i = 0; i < joint_names.size(); ++i)
+    for (std::size_t i = 0; i < joint_models.size(); ++i)
     {
-        ROS_INFO("Joint: %s", joint_names[i]->getName().c_str());
+        const JointModel* jointModel = joint_models[i];
+
+        ROS_INFO("Joint: %s", jointModel->getName().c_str());
     }
 
     kinematic_state->getJacobian(joint_model_group,
