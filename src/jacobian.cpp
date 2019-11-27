@@ -5,44 +5,56 @@
 #include <moveit/robot_model/robot_model.h>
 #include <moveit/robot_state/robot_state.h>
 
+using namespace std;
 using namespace robot_model;
+using namespace robot_model_loader;
+using namespace robot_state;
+
 
 int main(int argc, char** argv) {
     ros::init(argc, argv, "jacobian_calculator");
     ros::AsyncSpinner spinner(1);
     spinner.start();
 
-    robot_model_loader::RobotModelLoader robot_model_loader("robot_description");
+    RobotModelLoader robotModelLoader("robot_description");
+
+    RobotModelPtr kinematicModel = robotModelLoader.getModel();
 
 
-    moveit::planning_interface::MoveGroupInterface move_group_left_leg("LeftLeg");
+    // model groups
+    const vector<JointModelGroup*>& jointModelGroups = kinematicModel->getJointModelGroups();
     
-    robot_model::RobotModelPtr kinematic_model = robot_model_loader.getModel();
-    
-    ROS_ERROR("Model frame: %s", kinematic_model->getModelFrame().c_str());
-
-    robot_state::RobotStatePtr kinematic_state = move_group_left_leg.getCurrentState();
-    
-    const robot_state::JointModelGroup* joint_model_group = kinematic_model->getJointModelGroup("LeftLeg");
-
-    Eigen::Vector3d reference_point_position(0.0, 0.0, 0.0);
-    Eigen::MatrixXd jacobian;
-
-    const std::vector<JointModel*>& joint_models = kinematic_model->getJointModels();
-
-    
-    for (std::size_t i = 0; i < joint_models.size(); ++i)
+    // filters out only chained gruops
+    vector<JointModelGroup*> chainedModelGroups;
+    for(int i = 0; i < jointModelGroups.size(); i ++ )
     {
-        const JointModel* jointModel = joint_models[i];
+        JointModelGroup *current = jointModelGroups[i];
 
-
-
-        ROS_INFO("Joint: %s", jointModel->getName().c_str());
+        if(current->isChain())
+        {
+            chainedModelGroups.push_back(current);
+            ROS_INFO_STREAM(current->getName());
+        }
     }
 
-    kinematic_state->getJacobian(joint_model_group,
-                               kinematic_state->getLinkModel(joint_model_group->getLinkModelNames().back()),
-                               reference_point_position, jacobian);
-    
-    ROS_INFO_STREAM("Jacobian: \n" << jacobian << "\n");
+    moveit::planning_interface::MoveGroupInterface move_group_left_leg("LeftLeg");
+
+    RobotStatePtr kinematic_state = move_group_left_leg.getCurrentState();
+
+
+    // filters out only chained gruops
+    for(int i = 0; i < chainedModelGroups.size(); i ++ )
+    {
+        JointModelGroup *currentJointGroup = chainedModelGroups[i];
+
+        string endpoint = currentJointGroup->getLinkModelNames().back();
+
+        Eigen::Vector3d reference_point_position(0.0, 0.0, 0.0);
+        Eigen::MatrixXd jacobian;
+        
+        kinematic_state->getJacobian(currentJointGroup,kinematic_state->getLinkModel(endpoint),reference_point_position, jacobian);
+        
+        ROS_INFO_STREAM(currentJointGroup->getName());
+        ROS_INFO_STREAM("Jacobian: \n" << jacobian << "\n");
+    }
 }
