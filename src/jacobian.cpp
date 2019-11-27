@@ -43,9 +43,9 @@ int main(int argc, char** argv) {
         JointModelGroup *currentJointGroup = chainedModelGroups[i];
 
         string endpoint = currentJointGroup->getLinkModelNames().back();
-        string joint_group_name = currentJointGroup->getName();
+        string jointGroupName = currentJointGroup->getName();
 
-        moveit::planning_interface::MoveGroupInterface current_move_group(joint_group_name);
+        moveit::planning_interface::MoveGroupInterface current_move_group(jointGroupName);
 
         RobotStatePtr kinematic_state = current_move_group.getCurrentState();
 
@@ -54,7 +54,7 @@ int main(int argc, char** argv) {
         
         kinematic_state->getJacobian(currentJointGroup,kinematic_state->getLinkModel(endpoint),reference_point_position, jacobian);
         
-        ROS_INFO_STREAM(currentJointGroup->getName());
+        ROS_INFO_STREAM(jointGroupName);
         ROS_INFO_STREAM("Jacobian: \n" << jacobian << "\n");
     }
 }
