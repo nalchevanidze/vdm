@@ -39,7 +39,11 @@ source [catkin_project_dir]/devel/setup.bash
 Change into `src/vdm` and execute your desired launch-file:
 
 ```bash
+# general:
 roslaunch launch/[name].launch
+
+# jacobian-testing:
+rosrun vdm jacobian
 ```
 
 ## Known Problems
@@ -60,3 +64,4 @@ VDM is written and maintained by:
 
 - [nalchevanidze](https://github.com/nalchevanidze)
 - [haukesomm](https://github.com/haukesomm)
+
