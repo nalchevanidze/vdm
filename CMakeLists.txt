@@ -18,7 +18,7 @@ catkin_package(
 )
 
 
-add_executable(jacobian src/jacobian.cpp)
+add_executable(jacobian src/jacobian.cpp src/RobotModelParser.cpp src/RobotModelParser.h)
 
 
 target_link_libraries(jacobian ${catkin_LIBRARIES})
