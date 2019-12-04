@@ -26,10 +26,8 @@ void RobotMarkerPublisher::startPublishing(vector<robot_model::JointModelGroup*>
 
                 string name = jointNames[j]; 
 
-                // ros::ROS_INFO(name);
 
-                publishMarker(name, i);
-
+                publishMarker(name, i * 100 + j);
             }
 
         }
