@@ -7,17 +7,22 @@ RobotMarkerPublisher::RobotMarkerPublisher()
 {
     ros::NodeHandle node_handle;
     publisher = node_handle.advertise<visualization_msgs::Marker>("visualization_marker", 0);
+    ros::AsyncSpinner spinner(1);
+    spinner.start();
 }
 
 void RobotMarkerPublisher::startPublishing(vector<robot_model::JointModelGroup*> groups)
 {
-    while (true)
+    ros::Rate r(100);
+
+    while (ros::ok())
     {
         for(int i = 0; i < groups.size(); i ++ )
         {
             robot_model::JointModelGroup *currentJointGroup = groups[i];
             publishMarker(currentJointGroup->getName(), i);
         }
+        r.sleep();
     }
 }
 
