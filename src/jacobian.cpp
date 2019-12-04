@@ -4,12 +4,16 @@
 #include <moveit/robot_model_loader/robot_model_loader.h>
 #include <moveit/robot_model/robot_model.h>
 #include <moveit/robot_state/robot_state.h>
+
 #include "RobotModelTools.h"
+#include "RobotMarkerPublisher.h"
+
 
 using namespace std;
 using namespace robot_model;
 using namespace robot_model_loader;
 using namespace robot_state;
+using namespace ros;
 
 
 void logJacobian (JointModelGroup* currentJointGroup) 
@@ -26,6 +30,7 @@ void logJacobian (JointModelGroup* currentJointGroup)
     ROS_INFO_STREAM(jointGroupName);
     ROS_INFO_STREAM("Jacobian: \n" << jacobian << "\n");
 }  
+
 
 int main(int argc, char** argv) {
     ros::init(argc, argv, "jacobian_calculator");
@@ -44,11 +49,18 @@ int main(int argc, char** argv) {
     RobotModelTools tools;
     vector<JointModelGroup*> chainedModelGroups = tools.getChainModelGroups(kinematicModel);
 
-
+    
     // logs jacobians
     for(int i = 0; i < chainedModelGroups.size(); i ++ )
     {
         JointModelGroup *currentJointGroup = chainedModelGroups[i];
         logJacobian(currentJointGroup);
     }
+
+    RobotMarkerPublisher publisher;
+    publisher.startPublishing(chainedModelGroups);
 }
+
+
+
+
