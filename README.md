@@ -12,35 +12,50 @@ rviz.
 
 ### Setup
 
+#### Workspace
+
 ```zsh
-mkdir visual-dynamic-model
-cd visual-dynamic-model
+mkdir vdm
+cd vdm
 mkdir src
 cd src
 git clone git@github.com:nalchevanidze/vdm.git
-cd ../
+git clone git@github.com:bit-bots/bitbots_meta.git
 
+cd ../
 catkin init
-# adds env variables to your terminal
-source /opt/ros/kinetic/setup.<zsh | sh .... >
-catkin build
-source devel/setup.<zsh | sh .... >
 ```
 
-if you want not to set env variables every time you open the shell, you can write it in your `.<bash | zsh >rc`
+#### .bashrc
+
+In order to develop for ros using our vdm-package, your environment needs to
+be set up accordingly.  
+Please find below an **example** configuration:
 
 ```bash
+# Configure VDM using environment variables:
+
+# ROS-version codename (kinetic, melodic, etc.)
+export VDM_ROS_VERSION="melodic"
+# catkin-workspace path
+export VDM_WS_PATH="$HOME/catkin_ws"
+# path of the cloned bitbots_meta repository
+export VDM_BITBOTS_META_PATH="$VDM_WS_PATH/src/bitbots_meta"
+
+
+# Setup the ros-specific environment:
+
 source /opt/ros/kinetic/setup.bash
-source [catkin_project_dir]/devel/setup.bash
+source $VDM_WS_PATH/devel/setup.bash
 ```
 
 ## Launch
 
-Change into `src/vdm` and execute your desired launch-file:
+Change into your catkin-workspace and execute your desired launch-file:
 
 ```bash
 # general:
-roslaunch launch/[name].launch
+roslaunch vdm [lauchfile-name]
 
 # jacobian-testing:
 rosrun vdm jacobian
