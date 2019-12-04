@@ -12,6 +12,21 @@ using namespace robot_model_loader;
 using namespace robot_state;
 
 
+void logJacobian (JointModelGroup* currentJointGroup) 
+{
+    string endpoint = currentJointGroup->getLinkModelNames().back();
+    string jointGroupName = currentJointGroup->getName();
+    moveit::planning_interface::MoveGroupInterface current_move_group(jointGroupName);
+    RobotStatePtr kinematic_state = current_move_group.getCurrentState();
+    Eigen::Vector3d reference_point_position(0.0, 0.0, 0.0);
+    Eigen::MatrixXd jacobian;
+    
+    kinematic_state->getJacobian(currentJointGroup,kinematic_state->getLinkModel(endpoint),reference_point_position,jacobian);
+    
+    ROS_INFO_STREAM(jointGroupName);
+    ROS_INFO_STREAM("Jacobian: \n" << jacobian << "\n");
+}  
+
 int main(int argc, char** argv) {
     ros::init(argc, argv, "jacobian_calculator");
     ros::AsyncSpinner spinner(1);
@@ -29,24 +44,11 @@ int main(int argc, char** argv) {
     RobotModelTools tools;
     vector<JointModelGroup*> chainedModelGroups = tools.getChainModelGroups(kinematicModel);
 
-    // filters out only chained gruops
+
+    // logs jacobians
     for(int i = 0; i < chainedModelGroups.size(); i ++ )
     {
         JointModelGroup *currentJointGroup = chainedModelGroups[i];
-
-        string endpoint = currentJointGroup->getLinkModelNames().back();
-        string jointGroupName = currentJointGroup->getName();
-
-        moveit::planning_interface::MoveGroupInterface current_move_group(jointGroupName);
-
-        RobotStatePtr kinematic_state = current_move_group.getCurrentState();
-
-        Eigen::Vector3d reference_point_position(0.0, 0.0, 0.0);
-        Eigen::MatrixXd jacobian;
-        
-        kinematic_state->getJacobian(currentJointGroup,kinematic_state->getLinkModel(endpoint),reference_point_position, jacobian);
-        
-        ROS_INFO_STREAM(jointGroupName);
-        ROS_INFO_STREAM("Jacobian: \n" << jacobian << "\n");
+        logJacobian(currentJointGroup);
     }
 }
