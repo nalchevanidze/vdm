@@ -26,7 +26,7 @@ void RobotMarkerPublisher::startPublishing(vector<robot_model::JointModelGroup*>
 
                 string name = jointNames[j]; 
 
-
+                // TODO: better id generation
                 publishMarker(name, i * 100 + j);
             }
 
