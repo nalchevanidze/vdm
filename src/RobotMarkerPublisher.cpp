@@ -20,7 +20,18 @@ void RobotMarkerPublisher::startPublishing(vector<robot_model::JointModelGroup*>
         for(int i = 0; i < groups.size(); i ++ )
         {
             robot_model::JointModelGroup *currentJointGroup = groups[i];
-            publishMarker(currentJointGroup->getName(), i);
+            vector<string> jointNames = currentJointGroup->getLinkModelNames();
+            
+            for(int j = 0; j < jointNames.size(); j ++ ) {
+
+                string name = jointNames[j]; 
+
+                // ros::ROS_INFO(name);
+
+                publishMarker(name, i);
+
+            }
+
         }
         r.sleep();
     }
@@ -36,7 +47,7 @@ void RobotMarkerPublisher::publishMarker(string frame_id, int id)
 
     marker.ns = "stats";
     marker.id = id;
-    marker.type = visualization_msgs::Marker::SPHERE;
+    marker.type = visualization_msgs::Marker::ARROW;
     marker.action = visualization_msgs::Marker::ADD;
 
     // marker.pose.position.x = 1;
@@ -46,9 +57,9 @@ void RobotMarkerPublisher::publishMarker(string frame_id, int id)
     // marker.pose.orientation.y = 0.0;
     // marker.pose.orientation.z = 0.0;
     // marker.pose.orientation.w = 1.0;
-    // marker.scale.x = 1;
-    // marker.scale.y = 0.1;
-    // marker.scale.z = 0.1;
+    marker.scale.x = 0.1;
+    marker.scale.y = 0.03;
+    marker.scale.z = 0.03;
     marker.color.a = 1.0; // Don't forget to set the alpha!
     marker.color.r = 0.0;
     marker.color.g = 1.0;
