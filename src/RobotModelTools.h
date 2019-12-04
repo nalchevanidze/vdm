@@ -12,7 +12,7 @@ class RobotModelTools
 {
 public:
     vector<robot_model::JointModelGroup*> 
-    *getChainModelGroups(robot_model::RobotModelPtr model);
+    getChainModelGroups(robot_model::RobotModelPtr model);
 };
 
 #endif

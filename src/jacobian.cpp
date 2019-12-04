@@ -4,6 +4,7 @@
 #include <moveit/robot_model_loader/robot_model_loader.h>
 #include <moveit/robot_model/robot_model.h>
 #include <moveit/robot_state/robot_state.h>
+#include "RobotModelTools.h"
 
 using namespace std;
 using namespace robot_model;
@@ -25,17 +26,8 @@ int main(int argc, char** argv) {
     const vector<JointModelGroup*>& jointModelGroups = kinematicModel->getJointModelGroups();
     
     // filters out only chained gruops
-    vector<JointModelGroup*> chainedModelGroups;
-    for(int i = 0; i < jointModelGroups.size(); i ++ )
-    {
-        JointModelGroup *current = jointModelGroups[i];
-
-        if(current->isChain())
-        {
-            chainedModelGroups.push_back(current);
-            ROS_INFO_STREAM(current->getName());
-        }
-    }
+    RobotModelTools tools;
+    vector<JointModelGroup*> chainedModelGroups = tools.getChainModelGroups(kinematicModel);
 
     // filters out only chained gruops
     for(int i = 0; i < chainedModelGroups.size(); i ++ )
