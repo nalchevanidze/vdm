@@ -2,4 +2,11 @@
     <param name="use_gui" value="true"/>
 
     <include file="$(find wolfgang_moveit_config)/launch/demo.launch" />
+    <node
+        name="main"
+        pkg="vdm"
+        type="main"
+        output="screen"
+        required="true"
+    />
 </launch>

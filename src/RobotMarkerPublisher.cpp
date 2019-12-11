@@ -17,13 +17,13 @@ void RobotMarkerPublisher::startPublishing(vector<robot_model::JointModelGroup*>
 
     while (ros::ok())
     {
-        for(int i = 0; i < groups.size(); i ++ )
+        for (int i = 0; i < groups.size(); i++)
         {
             robot_model::JointModelGroup *currentJointGroup = groups[i];
             vector<string> jointNames = currentJointGroup->getLinkModelNames();
             
-            for(int j = 0; j < jointNames.size(); j ++ ) {
-
+            for (int j = 0; j < jointNames.size(); j++) 
+            {
                 string name = jointNames[j]; 
 
                 // TODO: better id generation

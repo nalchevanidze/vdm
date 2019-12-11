@@ -18,7 +18,7 @@ catkin_package(
 )
 
 
-add_executable(jacobian src/jacobian.cpp src/RobotModelTools.cpp src/RobotMarkerPublisher.cpp)
+add_executable(main src/main.cpp src/RobotModelTools.cpp src/RobotMarkerPublisher.cpp src/JacobianCalculator.cpp)
 
 
-target_link_libraries(jacobian ${catkin_LIBRARIES})
+target_link_libraries(main ${catkin_LIBRARIES})
