@@ -15,7 +15,7 @@ RobotModelTools::getChainModelGroups(robot_model::RobotModelPtr model)
         if (current->isChain())
         {
             chainModelGroups.push_back(current);
-            ROS_INFO("Found chain-model-group: %s", current->getName());
+            ROS_INFO("Found chain-model-group: %s", current->getName().c_str());
         }
     }
 
