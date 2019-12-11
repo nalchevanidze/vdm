@@ -16,8 +16,13 @@ public:
 
 private:
     ros::Publisher publisher;
+    int idCounter; 
 
-    void publishMarker(string frame_id, int id);
+    void publishMarker(string frameId);
+
+    visualization_msgs::Marker createMarker (string frameId);
+    visualization_msgs::Marker createLabel(string frameID, string label);
+    visualization_msgs::Marker createArrow(string frameID);
 };
 
 #endif
