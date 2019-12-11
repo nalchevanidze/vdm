@@ -6,6 +6,7 @@
 #include <moveit/robot_state/robot_state.h>
 
 #include "RobotModelTools.h"
+#include "JacobianCalculator.h"
 #include "RobotMarkerPublisher.h"
 
 
@@ -16,51 +17,29 @@ using namespace robot_state;
 using namespace ros;
 
 
-void logJacobian (JointModelGroup* currentJointGroup) 
-{
-    string endpoint = currentJointGroup->getLinkModelNames().back();
-    string jointGroupName = currentJointGroup->getName();
-    moveit::planning_interface::MoveGroupInterface current_move_group(jointGroupName);
-    RobotStatePtr kinematic_state = current_move_group.getCurrentState();
-    Eigen::Vector3d reference_point_position(0.0, 0.0, 0.0);
-    Eigen::MatrixXd jacobian;
-    
-    kinematic_state->getJacobian(currentJointGroup,kinematic_state->getLinkModel(endpoint),reference_point_position,jacobian);
-    
-    ROS_INFO_STREAM(jointGroupName);
-    ROS_INFO_STREAM("Jacobian: \n" << jacobian << "\n");
-}  
-
-
 int main(int argc, char** argv) {
     ros::init(argc, argv, "jacobian_calculator");
     ros::AsyncSpinner spinner(1);
     spinner.start();
 
     RobotModelLoader robotModelLoader("robot_description");
-
     RobotModelPtr kinematicModel = robotModelLoader.getModel();
 
+    RobotModelTools robotModelTools;
+    JacobianCalculator jacobianCalculator;
 
-    // model groups
     const vector<JointModelGroup*>& jointModelGroups = kinematicModel->getJointModelGroups();
-    
-    // filters out only chained gruops
-    RobotModelTools tools;
-    vector<JointModelGroup*> chainedModelGroups = tools.getChainModelGroups(kinematicModel);
+    vector<JointModelGroup*> chainedModelGroups = robotModelTools.getChainModelGroups(kinematicModel);
 
     
-    // logs jacobians
+    // calculate jacobians
     for(int i = 0; i < chainedModelGroups.size(); i ++ )
     {
         JointModelGroup *currentJointGroup = chainedModelGroups[i];
-        logJacobian(currentJointGroup);
+        jacobianCalculator.calculateJacobian(currentJointGroup, true);
     }
 
+    // publish markers
     RobotMarkerPublisher publisher;
     publisher.startPublishing(chainedModelGroups);
 }
-
-
-
-
