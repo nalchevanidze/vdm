@@ -19,6 +19,8 @@ void AbstractMarkerPublisher::startPublishing()
 
     while (ros::ok())
     {
+        // TODO: fix id generation
+        this->idCounter = 0;
         for (int i = 0; i < groups.size(); i++)
         {
             robot_model::JointModelGroup *currentJointGroup = groups[i];
