@@ -3,42 +3,20 @@
 #include "RobotMarkerPublisher.h"
 
 
-int idCounter = 0;
+RobotMarkerPublisher::RobotMarkerPublisher(string topicName, vector<robot_model::JointModelGroup*> groups) : AbstractMarkerPublisher(topicName, groups)
+{}
 
-RobotMarkerPublisher::RobotMarkerPublisher()
+
+visualization_msgs::MarkerArray RobotMarkerPublisher::createMarkersForFrame(string frame)
 {
-    ros::NodeHandle node_handle;
-    publisher = node_handle.advertise<visualization_msgs::Marker>("visualization_marker", 0);
-    ros::AsyncSpinner spinner(1);
-    spinner.start();
+    visualization_msgs::MarkerArray markerArray;
+    markerArray.markers.push_back(createMarkerLabel(frame, "test"));
+    markerArray.markers.push_back(createMarkerArrow(frame));
+    return markerArray;
 }
 
-void RobotMarkerPublisher::startPublishing(vector<robot_model::JointModelGroup*> groups)
-{
-    ros::Rate r(100);
 
-    while (ros::ok())
-    {
-        for (int i = 0; i < groups.size(); i++)
-        {
-            robot_model::JointModelGroup *currentJointGroup = groups[i];
-            vector<string> jointNames = currentJointGroup->getLinkModelNames();
-            
-            for (int j = 0; j < jointNames.size(); j++) 
-            {
-                string name = jointNames[j]; 
-
-                // TODO: better id generation
-                publishMarker(name);
-            }
-
-        }
-        r.sleep();
-    }
-}
-
-// TODO: create dedicated class
-visualization_msgs::Marker createMarker(string frameId)
+visualization_msgs::Marker RobotMarkerPublisher::createMarker(string frameId)
 {
 
     visualization_msgs::Marker marker;
@@ -60,7 +38,7 @@ visualization_msgs::Marker createMarker(string frameId)
     // marker.pose.orientation.y = 0.0;
     // marker.pose.orientation.z = 0.0;
     // marker.pose.orientation.w = 1.0;
-    marker.color.a = 1.0; // Don't forget to set the alpha!
+    marker.color.a = 1.0;
     marker.color.r = 0.0;
     marker.color.g = 1.0;
     marker.color.b = 0.0;    
@@ -68,8 +46,7 @@ visualization_msgs::Marker createMarker(string frameId)
     return marker;
 }
 
-
-visualization_msgs::Marker createMarkerLabel(string frameId, string marker_label)
+visualization_msgs::Marker RobotMarkerPublisher::createMarkerLabel(string frameId, string marker_label)
 {
     visualization_msgs::Marker marker;
 
@@ -85,8 +62,7 @@ visualization_msgs::Marker createMarkerLabel(string frameId, string marker_label
     return marker;
 }
 
-
-visualization_msgs::Marker createMarkerArrow(string frameId)
+visualization_msgs::Marker RobotMarkerPublisher::createMarkerArrow(string frameId)
 {
     visualization_msgs::Marker marker;
 
@@ -99,19 +75,3 @@ visualization_msgs::Marker createMarkerArrow(string frameId)
 
     return marker;
 }
-
-
-
-void RobotMarkerPublisher::publishMarker(string frameId)
-{
-    visualization_msgs::MarkerArray markers;
-
-    visualization_msgs::Marker marker = createMarkerArrow(frameId);  
-    visualization_msgs::Marker markerLabel = createMarkerLabel(frameId, "some Jacobian");
-
-    // markers.push_back(marker);
-    // markers.push_back(markerLabe);
-
-    publisher.publish(markerLabel);
-    publisher.publish(marker);
-}  

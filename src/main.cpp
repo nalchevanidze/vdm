@@ -35,6 +35,6 @@ int main(int argc, char** argv) {
     }
 
     // publish markers
-    RobotMarkerPublisher publisher;
-    publisher.startPublishing(chainedModelGroups);
+    RobotMarkerPublisher publisher("vdm_markers_velocity", chainedModelGroups);
+    publisher.startPublishing();
 }

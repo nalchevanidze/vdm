@@ -1,5 +1,5 @@
-#ifndef MARKER_PUBLISHER_INTERFACE_H
-#define MARKER_PUBLISHER_INTERFACE_H
+#ifndef ABSTRACT_MARKER_PUBLISHER_H
+#define ABSTRACT_MARKER_PUBLISHER_H
 
 #include <string>
 
@@ -11,7 +11,7 @@ using namespace std;
 class AbstractMarkerPublisher
 {
 public:
-    AbstractMarkerPublisher(vector<robot_model::JointModelGroup*> groups);
+    AbstractMarkerPublisher(string topicName, vector<robot_model::JointModelGroup*> groups);
     void startPublishing();
 
 protected:
@@ -19,7 +19,6 @@ protected:
     ros::Publisher publisher;
     int idCounter; 
 
-    virtual string getPublisherTopicName() = 0;
     virtual visualization_msgs::MarkerArray createMarkersForFrame(string frame) = 0;
 };
 
