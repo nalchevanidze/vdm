@@ -1,4 +1,5 @@
 #include "AbstractMarkerPublisher.h"
+#include "JacobianCalculator.h"
 
 int idCounter = 0;
 
@@ -15,6 +16,9 @@ AbstractMarkerPublisher::AbstractMarkerPublisher(string topicName, vector<robot_
 
 void AbstractMarkerPublisher::startPublishing()
 {
+
+    JacobianCalculator tools;
+
     ros::Rate r(100);
 
     while (ros::ok())
@@ -30,7 +34,9 @@ void AbstractMarkerPublisher::startPublishing()
             {
                 string name = jointNames[j]; 
 
-                publisher.publish(createMarkersForFrame(name));
+                string res = tools.jacobianValueOf(currentJointGroup, name);
+
+                publisher.publish(createMarkersForFrame(name, res));
             }
         }
         r.sleep();

@@ -13,7 +13,11 @@ using namespace std;
 class JacobianCalculator
 {
 public:
-    Eigen::MatrixXd calculateJacobian(robot_model::JointModelGroup *group, bool log = true);
+    string jacobianValueOf(robot_model::JointModelGroup *group, string endpoint);
+
+private:
+    Eigen::MatrixXd calculateJacobian(robot_model::JointModelGroup *group, string endpoint);
+
 };
 
 #endif

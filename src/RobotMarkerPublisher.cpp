@@ -7,10 +7,10 @@ RobotMarkerPublisher::RobotMarkerPublisher(string topicName, vector<robot_model:
 {}
 
 
-visualization_msgs::MarkerArray RobotMarkerPublisher::createMarkersForFrame(string frame)
+visualization_msgs::MarkerArray RobotMarkerPublisher::createMarkersForFrame(string frame, string label)
 {
     visualization_msgs::MarkerArray markerArray;
-    markerArray.markers.push_back(createMarkerLabel(frame, "jacobian-test-value"));
+    markerArray.markers.push_back(createMarkerLabel(frame, label));
     markerArray.markers.push_back(createMarkerArrow(frame));
     return markerArray;
 }

@@ -19,7 +19,7 @@ protected:
     ros::Publisher publisher;
     int idCounter; 
 
-    virtual visualization_msgs::MarkerArray createMarkersForFrame(string frame) = 0;
+    virtual visualization_msgs::MarkerArray createMarkersForFrame(string frame, string label) = 0;
 };
 
 #endif

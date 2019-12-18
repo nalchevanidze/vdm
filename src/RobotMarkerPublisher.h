@@ -16,7 +16,7 @@ public:
     RobotMarkerPublisher(string topicName, vector<robot_model::JointModelGroup*> groups);
 
 private:
-    visualization_msgs::MarkerArray createMarkersForFrame(string frame) override;
+    visualization_msgs::MarkerArray createMarkersForFrame(string frame, string label) override;
 
     visualization_msgs::Marker createMarker(string frameId);
     visualization_msgs::Marker createMarkerLabel(string frameId, string marker_label);
