@@ -14,12 +14,12 @@ public:
     AbstractMarkerPublisher(vector<robot_model::JointModelGroup*> groups);
     void startPublishing();
 
-private:
+protected:
     vector<robot_model::JointModelGroup*> groups;
     ros::Publisher publisher;
     int idCounter; 
 
-    virtual string getPublisherTopicName();
+    virtual string getPublisherTopicName() = 0;
     virtual visualization_msgs::MarkerArray createMarkersForFrame(string frame) = 0;
 };
 
