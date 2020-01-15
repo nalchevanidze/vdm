@@ -2,9 +2,9 @@
 
 #include <string.h>
 
-Eigen::MatrixXd JacobianCalculator::calculateJacobian(robot_model::JointModelGroup *group, bool log)
+Eigen::MatrixXd JacobianCalculator::calculateJacobian(robot_model::JointModelGroup *group, string endpoint)
 {
-    string endpoint = group->getLinkModelNames().back();
+    // string endpoint = group->getLinkModelNames().back();
     string groupName = group->getName();
 
     moveit::planning_interface::MoveGroupInterface current_move_group(groupName);
@@ -15,11 +15,17 @@ Eigen::MatrixXd JacobianCalculator::calculateJacobian(robot_model::JointModelGro
     
     kinematic_state->getJacobian(group, kinematic_state->getLinkModel(endpoint), reference_point_position, jacobian);
     
-    if (log)
-    {
-        ROS_INFO_STREAM("Calculated Jacobian for JointModelGroup '" << groupName << "':\n");
-        ROS_INFO_STREAM(jacobian << "\n");
-    }
+
+    // ROS_INFO_STREAM("Calculated Jacobian for JointModelGroup '" << groupName << "':\n");
+    // ROS_INFO_STREAM(jacobian << "\n");
 
     return jacobian;
+}
+
+
+string JacobianCalculator::jacobianValueOf (robot_model::JointModelGroup *group, string endpoint)
+{
+    stringstream stStream;
+    stStream << calculateJacobian(group, endpoint);
+    return stStream.str();
 }
