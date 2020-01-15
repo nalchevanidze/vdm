@@ -26,14 +26,6 @@ int main(int argc, char** argv) {
     const vector<JointModelGroup*>& jointModelGroups = kinematicModel->getJointModelGroups();
     vector<JointModelGroup*> chainedModelGroups = robotModelTools.getChainModelGroups(kinematicModel);
 
-    
-    // calculate jacobians
-    // for(int i = 0; i < chainedModelGroups.size(); i ++ )
-    // {
-    //     JointModelGroup *currentJointGroup = chainedModelGroups[i];
-    //     jacobianCalculator.calculateJacobian(currentJointGroup, true);
-    // }
-
     // publish markers
     RobotMarkerPublisher publisher("vdm_markers_velocity", chainedModelGroups);
     publisher.startPublishing();
