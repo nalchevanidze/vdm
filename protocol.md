@@ -50,15 +50,28 @@
   - lists all chained move groups
   - prints out jacobian value for each joint
 
-## week 8
+## week 8 (04.12.2019)
 
-- Implementation of a simple jacobian-calculator-class
-- Encountered problems while obtaining the velocities from moveit since we 
+- implemented `RobotMarkerPublisher`, that for every joint
+  - logs jackobians
+  - displays `ARROW` shape
+
+## Week 9 (11.12.2019)
+
+- Split up code into classes
+- deleted python code
+
+## week 10 (18.12.2019)
+
+- for each joint publisher publishes jacobian value on marker.v TODO: screenshot
+- Encountered problems while obtaining the velocities from moveit since we
   didn't know how to properly interprete the results
+
+## Week 11 (8.1.2020)
+
 - Migration to a `Subscriber`-based implementation
 
-
-## Week 10
+## week 12 (15.1.2020)
 
 - Implemented functionality to listen to the 'joint_states' topic and publish markers as a reaction
 - topic `joint_states` does not provide velocities , it returns just an empty array.
@@ -71,3 +84,8 @@ TODO:
 - try out to caclulate velocity from joint position
   - try out to get positions by JointState
 - prepare for presentation
+
+## week 13 (21.1.2020)
+
+- fullfill protocol
+- start presentation
