@@ -1,6 +1,6 @@
 # Protocol
 
-## week 1 
+## week 1
 
 - orga
 - we found each other
@@ -39,12 +39,18 @@
 ## Week 6 (20.11.2019)
 
 - we decided to move `c++` (worst decision)
-- we tried to setup moveit. could not succeced
+- we tried to setup moveit `tree.urdf`. could not succeced
+  could not generate model description on our own.
 
-## Week 7
+## Week 7 (27.11.2019)
 
 - Migration to C++ and moveit
+- we setup `movit` with model of `wolfgang`
+- wrote first succesfull jacobian calculator. that:
+  - lists all chained move groups
+  - prints out jacobian value for each joint
 
+## week 8
 
 - Implementation of a simple jacobian-calculator-class
 - Encountered problems while obtaining the velocities from moveit since we 
