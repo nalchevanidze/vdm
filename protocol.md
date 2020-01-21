@@ -1,16 +1,50 @@
 # Protocol
 
-## Week 1-2 
+## week 1 
 
-- First demo-implementation of a moving robot in Python 
+- orga
+- we found each other
 
+## week 2 (23.10.2019)
 
-## Week 3-4
+- we created github repo
+- decided which project to work on
+- started to prepare our local environments, With Docker, or ...
+  - david: on mac didnot workded at all
+  - hauke: after 2 week of torture, he finally did with VirtualBox
+
+## Week 3 (30.10.2019)
+
+- decided to work with uni computers
+- we did research: which language, how ros works at all ...
+- we choose `python`
+- setup project with `catkin`
+- First demo-implementation of a moving robot in Python
+- elaborated `rviz` and configured `*.launch` files.
+- created `main.launch`
+
+## Week 4 (6.11.2019)
+
+- elaborated `urdf`
+- created `line.urdf` TODO: screenshot
+- implemented `LineJointStatePublisher` with python, this publishes publishes sine values, to which the line model subscribes and moves accordingly
+- thought on how to obtain list of joints from the urdf
+
+## Week 5 (13.11.2019)
+
+- we merged the different nodes in one combined  `main.launch`
+- created sofisticated model of tree
+- we found `moveit`.
+
+## Week 6 (20.11.2019)
+
+- we decided to move `c++` (worst decision)
+- we tried to setup moveit. could not succeced
+
+## Week 7
 
 - Migration to C++ and moveit
 
-
-## Week 4-9
 
 - Implementation of a simple jacobian-calculator-class
 - Encountered problems while obtaining the velocities from moveit since we 
