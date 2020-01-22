@@ -89,3 +89,11 @@ TODO:
 
 - fullfill protocol
 - start presentation
+
+## week 14 (22.1.2020)
+
+- Tried `tf2` as an alternative approach for velocity calculation,
+ `tf2` provides absolute velocities. so we don't need jacobian  anymore
+- with python script we mocked `joint_state`, so we can have velocities
+  for calculations
+- we made both approaches simultaneously
