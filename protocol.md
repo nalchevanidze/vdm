@@ -97,3 +97,11 @@ TODO:
 - with python script we mocked `joint_state`, so we can have velocities
   for calculations
 - we made both approaches simultaneously
+- joint_state `failed` , but `tf2` successed. we have functioning velocity publisher
+
+TODO:
+
+- code is ugly refactor it
+- add the comments
+- mention the changes in presentation
+- delete dead code
