@@ -10,17 +10,14 @@
 #include <geometry_msgs/TransformStamped.h>
 
 #include "RobotModelTools.h"
-#include "JacobianCalculator.h"
 #include "RobotMarkerPublisher.h"
 #include "sensor_msgs/JointState.h"
-
 
 using namespace std;
 using namespace robot_model;
 using namespace robot_model_loader;
 using namespace robot_state;
 using namespace ros;
-
 
 double calculateVelocity(
     chrono::high_resolution_clock::time_point t1, 
@@ -146,7 +143,7 @@ int main(int argc, char** argv) {
     ros::Rate rate(10.0);
     while (n.ok())
     {
-        int idCounter = 0;
+        int jointIndex = 0;
         for (int i = 0; i < groups.size(); i++)
         {
             robot_model::JointModelGroup *currentJointGroup = groups[i];
@@ -171,7 +168,6 @@ int main(int argc, char** argv) {
                     continue;
                 }
 
-
                 double x = transformStamped.transform.translation.x;
                 double y = transformStamped.transform.translation.y;
                 double z = transformStamped.transform.translation.z;
@@ -180,16 +176,16 @@ int main(int argc, char** argv) {
                 vector<double> currentCoordinates = { x, y, z };
 
                 
-                double velocity = calculateVelocity(currentTimePoint, currentCoordinates, lastTimePoints[idCounter], lastCoordinates[idCounter]);
+                double velocity = calculateVelocity(currentTimePoint, currentCoordinates, lastTimePoints[jointIndex], lastCoordinates[jointIndex]);
                 ROS_ERROR_STREAM("Velocity: " << velocity);
 
 
-                lastTimePoints[idCounter] = currentTimePoint;
-                lastCoordinates[idCounter] = currentCoordinates;
+                lastTimePoints[jointIndex] = currentTimePoint;
+                lastCoordinates[jointIndex] = currentCoordinates;
 
-                publisher.publish(createMarkersForFrame(name, idCounter, to_string(velocity)));
+                publisher.publish(createMarkersForFrame(name, jointIndex, to_string(velocity)));
 
-                idCounter++;
+                jointIndex++;
             }
         }
 
