@@ -8,9 +8,12 @@
 
 using namespace std;
 
+/// A tool class containing helpful robot-model-related functions.
 class RobotModelTools
 {
 public:
+    /// Returns a vector of all the joint's names contained in the given robot-
+    /// model.
     vector<string> getAllJointNames(robot_model::RobotModelPtr model);
 };
 
