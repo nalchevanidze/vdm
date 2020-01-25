@@ -15,8 +15,8 @@ class RobotMarkerGenerator
         /// Constructor
         RobotMarkerGenerator();
 
-        /// Creates a marker array that visualizes the given value in form
-        /// of an arrow and a text.
+        /// Creates a marker array that visualizes the given velocity in form
+        /// of an arrow and a text-label.
         ///
         /// The text simply displays the given value.
         /// The arrow-shaped marker visualizes the value and varies in size
@@ -24,7 +24,7 @@ class RobotMarkerGenerator
         ///
         /// TODO: Convert 'value' to double and pass in additional prameters
         /// for the name and unit.
-        visualization_msgs::MarkerArray create(string name, string value);
+        visualization_msgs::MarkerArray createVelocityMarkers(string frameId, double value);
 
         /// Resets the internal id-counter.
         ///

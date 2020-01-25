@@ -1,3 +1,5 @@
+#include <string>
+
 #include <moveit/robot_model/robot_model.h>
 
 #include "RobotMarkerGenerator.h"
@@ -8,11 +10,13 @@ RobotMarkerGenerator::RobotMarkerGenerator()
 
 int idCounter = 0;
 
-visualization_msgs::MarkerArray RobotMarkerGenerator::create(string name, string value)
+visualization_msgs::MarkerArray RobotMarkerGenerator::createVelocityMarkers(string frameId, double value)
 {
     visualization_msgs::MarkerArray markerArray;
-    markerArray.markers.push_back(createMarkerLabel(name, value));
-    markerArray.markers.push_back(createMarkerArrow(name));
+
+    const string formattedVelocity = to_string(value) + " m/s";
+    markerArray.markers.push_back(createMarkerLabel(frameId, formattedVelocity));
+    markerArray.markers.push_back(createMarkerArrow(frameId));
     return markerArray;
 }
 
