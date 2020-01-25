@@ -17,6 +17,10 @@ include_directories( ${catkin_INCLUDE_DIRS})
 catkin_package(
 )
 
-add_executable(main src/main.cpp src/RobotModelTools.cpp src/AbstractMarkerPublisher.cpp src/RobotMarkerPublisher.cpp src/JacobianCalculator.cpp)
+add_executable(main 
+    src/main.cpp
+    src/RobotModelTools.cpp
+    src/RobotMarkerGenerator.cpp
+)
 
 target_link_libraries(main ${catkin_LIBRARIES})

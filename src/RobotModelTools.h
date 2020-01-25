@@ -11,8 +11,8 @@ using namespace std;
 class RobotModelTools
 {
 public:
-    vector<robot_model::JointModelGroup*> 
-    getChainModelGroups(robot_model::RobotModelPtr model);
+    vector<string> getAllJointNames(robot_model::RobotModelPtr model);
+
 };
 
 #endif

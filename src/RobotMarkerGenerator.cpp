@@ -1,39 +1,43 @@
 #include <moveit/robot_model/robot_model.h>
 
-#include "RobotMarkerPublisher.h"
+#include "RobotMarkerGenerator.h"
 
 
-RobotMarkerPublisher::RobotMarkerPublisher(string topicName, vector<robot_model::JointModelGroup*> groups) : AbstractMarkerPublisher(topicName, groups)
+RobotMarkerGenerator::RobotMarkerGenerator()
 {}
 
+int idCounter = 0;
 
-visualization_msgs::MarkerArray RobotMarkerPublisher::createMarkersForFrame(string frame, string label)
+visualization_msgs::MarkerArray RobotMarkerGenerator::create(string name, string value)
 {
     visualization_msgs::MarkerArray markerArray;
-    markerArray.markers.push_back(createMarkerLabel(frame, label));
-    markerArray.markers.push_back(createMarkerArrow(frame));
+    markerArray.markers.push_back(createMarkerLabel(name, value));
+    markerArray.markers.push_back(createMarkerArrow(name));
     return markerArray;
 }
 
-
-visualization_msgs::Marker RobotMarkerPublisher::createMarker(string frameId)
+void RobotMarkerGenerator::reset()
 {
+    idCounter = 0;
+}
+
+visualization_msgs::Marker RobotMarkerGenerator::createMarker(string frameId)
+{
+    idCounter++; 
 
     visualization_msgs::Marker marker;
 
+    marker.id = idCounter;
     marker.header.frame_id = frameId;
-
     marker.header.stamp = ros::Time();
     marker.ns = "stats";
-
-    idCounter++; 
-    
-    marker.id = idCounter;
 
     marker.action = visualization_msgs::Marker::ADD;
     // marker.pose.position.x = 1;
     // marker.pose.position.y = 1;
     // marker.pose.position.z = 1;
+
+    // TODO: set orientation by velocity direction
     // marker.pose.orientation.x = 0.0;
     // marker.pose.orientation.y = 0.0;
     // marker.pose.orientation.z = 0.0;
@@ -46,7 +50,7 @@ visualization_msgs::Marker RobotMarkerPublisher::createMarker(string frameId)
     return marker;
 }
 
-visualization_msgs::Marker RobotMarkerPublisher::createMarkerLabel(string frameId, string marker_label)
+visualization_msgs::Marker RobotMarkerGenerator::createMarkerLabel(string frameId, string marker_label)
 {
     visualization_msgs::Marker marker;
 
@@ -62,7 +66,7 @@ visualization_msgs::Marker RobotMarkerPublisher::createMarkerLabel(string frameI
     return marker;
 }
 
-visualization_msgs::Marker RobotMarkerPublisher::createMarkerArrow(string frameId)
+visualization_msgs::Marker RobotMarkerGenerator::createMarkerArrow(string frameId)
 {
     visualization_msgs::Marker marker;
 
