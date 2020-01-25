@@ -107,8 +107,7 @@ int main(int argc, char** argv) {
             lastTimePoints[i] = currentTimePoint;
             lastCoordinates[i] = currentCoordinates;
 
-            publisher.publish(markerGenerator.createMarkersForFrame(name, to_string(velocity)));
-
+            publisher.publish(markerGenerator.create(name, to_string(velocity)));
         }
         rate.sleep();
     }

@@ -12,7 +12,7 @@ class RobotMarkerGenerator
 {
     public:
         RobotMarkerGenerator();
-        visualization_msgs::MarkerArray createMarkersForFrame(string frame, string label);
+        visualization_msgs::MarkerArray create(string name, string value);
         void reset(); 
 
     private:

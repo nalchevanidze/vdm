@@ -8,11 +8,11 @@ RobotMarkerGenerator::RobotMarkerGenerator()
 
 int idCounter = 0;
 
-visualization_msgs::MarkerArray RobotMarkerGenerator::createMarkersForFrame(string frame, string label)
+visualization_msgs::MarkerArray RobotMarkerGenerator::create(string name, string value)
 {
     visualization_msgs::MarkerArray markerArray;
-    markerArray.markers.push_back(createMarkerLabel(frame, label));
-    markerArray.markers.push_back(createMarkerArrow(frame));
+    markerArray.markers.push_back(createMarkerLabel(name, value));
+    markerArray.markers.push_back(createMarkerArrow(name));
     return markerArray;
 }
 
