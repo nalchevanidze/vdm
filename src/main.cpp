@@ -19,6 +19,7 @@ using namespace robot_model_loader;
 using namespace robot_state;
 using namespace ros;
 
+// TODO: move inside VelocityCalculator
 double calculateVelocity(
     chrono::high_resolution_clock::time_point t1, 
     vector<double> pos1, 
@@ -33,6 +34,17 @@ double calculateVelocity(
     // v = s / t
     return (distance / (timeDiff.count()));
 }
+
+// TODO: move inside VelocityCalculator
+vector<double> toPosition(geometry_msgs::TransformStamped msg)
+{
+    double x = msg.transform.translation.x;
+    double y = msg.transform.translation.y;
+    double z = msg.transform.translation.z;
+    ROS_INFO_STREAM("Coordinates: {" << "x: " << x << ", y: " << y << ", z: " << z << "}");
+    return { x, y, z };
+}
+
 
 int main(int argc, char** argv) {
     ros::init(argc, argv, "jacobian_calculator");
@@ -56,6 +68,7 @@ int main(int argc, char** argv) {
     vector<chrono::high_resolution_clock::time_point> lastTimePoints; // chrono::high_resolution_clock::now();
     vector<vector<double>> lastCoordinates; // { 0.0, 0.0, 0.0 };
 
+    // fill initialize times and positions
     for (int j = 0; j < jointNames.size(); j++) 
     {
         lastTimePoints.push_back(chrono::high_resolution_clock::now());
@@ -70,6 +83,7 @@ int main(int argc, char** argv) {
         // TODO: replace with: markerGenerator.reset()
         markerGenerator.idCounter = 0;
         
+        // update Positions
         for (int j = 0; j < jointNames.size(); j++) 
         {
             string name = jointNames[j]; 
@@ -89,13 +103,7 @@ int main(int argc, char** argv) {
                 continue;
             }
 
-            double x = transformStamped.transform.translation.x;
-            double y = transformStamped.transform.translation.y;
-            double z = transformStamped.transform.translation.z;
-
-            ROS_INFO_STREAM("Coordinates: {" << "x: " << x << ", y: " << y << ", z: " << z);
-            vector<double> currentCoordinates = { x, y, z };
-                
+            vector<double> currentCoordinates = toPosition(transformStamped);    
             double velocity = calculateVelocity(currentTimePoint, currentCoordinates, lastTimePoints[jointIndex], lastCoordinates[jointIndex]);
             ROS_INFO_STREAM("Velocity: " << velocity);
 
@@ -106,7 +114,6 @@ int main(int argc, char** argv) {
 
             jointIndex++;
         }
-
         rate.sleep();
     }
 }
