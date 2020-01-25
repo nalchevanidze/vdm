@@ -12,7 +12,6 @@ class RobotModelTools
 {
 public:
     vector<string> getAllJointNames(robot_model::RobotModelPtr model);
-
 };
 
 #endif
