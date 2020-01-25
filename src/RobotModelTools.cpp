@@ -25,7 +25,7 @@ RobotModelTools::getChainModelGroups(robot_model::RobotModelPtr model)
 vector<string> 
 RobotModelTools::allJointNames(vector<robot_model::JointModelGroup*> groups)
 {
-    vector<string> jointNames;
+    vector<string> jointVector;
 
     for (int i = 0; i < groups.size(); i++)
     {
@@ -34,9 +34,9 @@ RobotModelTools::allJointNames(vector<robot_model::JointModelGroup*> groups)
         
         for (int j = 0; j < jointNames.size(); j++) 
         {
-            jointNames.push_back(jointNames[i]);
+            jointVector.push_back(jointNames[i]);
         }
     }
 
-    return jointNames;
+    return jointVector;
 }
