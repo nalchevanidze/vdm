@@ -48,26 +48,20 @@ vector<double> toPosition(geometry_msgs::TransformStamped msg)
 
 int main(int argc, char** argv) {
     ros::init(argc, argv, "jacobian_calculator");
-
     ros::NodeHandle n;
 
     tf2_ros::Buffer tfBuffer;
     tf2_ros::TransformListener tfListener(tfBuffer);
 
-    auto publisher = n.advertise<visualization_msgs::MarkerArray>("/vdm_markers", 0);
-    RobotMarkerGenerator markerGenerator = RobotMarkerGenerator();
-
+    // list all joints
     RobotModelLoader robotModelLoader("robot_description");
     RobotModelPtr kinematicModel = robotModelLoader.getModel();
-
     RobotModelTools robotModelTools;
-
-    const vector<JointModelGroup*>& jointModelGroups = kinematicModel->getJointModelGroups();
     vector<string> jointNames = robotModelTools.getAllJointNames(kinematicModel);
 
+    // init velocities,cordinates for each joint
     vector<chrono::high_resolution_clock::time_point> lastTimePoints; // chrono::high_resolution_clock::now();
     vector<vector<double>> lastCoordinates; // { 0.0, 0.0, 0.0 };
-
     // fill initialize times and positions
     for (int j = 0; j < jointNames.size(); j++) 
     {
@@ -76,18 +70,21 @@ int main(int argc, char** argv) {
         lastCoordinates.push_back(dummyCoordninates);
     }
    
+    // publish velocities for all joint
+    auto publisher = n.advertise<visualization_msgs::MarkerArray>("/vdm_markers", 0);
+    RobotMarkerGenerator markerGenerator = RobotMarkerGenerator();
+    
     ros::Rate rate(10.0);
     while (n.ok())
     {
-        int jointIndex = 0;
-        // TODO: replace with: markerGenerator.reset()
-        markerGenerator.idCounter = 0;
-        
+        // starts id generation from 0, markerID must be same for each iteration
+        markerGenerator.reset();
+
         // update Positions
-        for (int j = 0; j < jointNames.size(); j++) 
+        for (int i = 0; i < jointNames.size(); i++) 
         {
-            string name = jointNames[j]; 
-            ROS_ERROR_STREAM("Name: " << name);
+            string name = jointNames[i]; 
+            ROS_WARN_STREAM("Name: " << name);
 
             chrono::high_resolution_clock::time_point currentTimePoint = chrono::high_resolution_clock::now();
 
@@ -96,7 +93,7 @@ int main(int argc, char** argv) {
             {
                 transformStamped = tfBuffer.lookupTransform("base_link", name, ros::Time(0));
             }
-            catch (tf2::TransformException &ex) 
+            catch (tf2::TransformException &ex)
             {
                 ROS_WARN("%s",ex.what());
                 ros::Duration(1.0).sleep();
@@ -104,15 +101,14 @@ int main(int argc, char** argv) {
             }
 
             vector<double> currentCoordinates = toPosition(transformStamped);    
-            double velocity = calculateVelocity(currentTimePoint, currentCoordinates, lastTimePoints[jointIndex], lastCoordinates[jointIndex]);
+            double velocity = calculateVelocity(currentTimePoint, currentCoordinates, lastTimePoints[i], lastCoordinates[i]);
             ROS_INFO_STREAM("Velocity: " << velocity);
 
-            lastTimePoints[jointIndex] = currentTimePoint;
-            lastCoordinates[jointIndex] = currentCoordinates;
+            lastTimePoints[i] = currentTimePoint;
+            lastCoordinates[i] = currentCoordinates;
 
             publisher.publish(markerGenerator.createMarkersForFrame(name, to_string(velocity)));
 
-            jointIndex++;
         }
         rate.sleep();
     }

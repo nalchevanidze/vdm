@@ -16,6 +16,11 @@ visualization_msgs::MarkerArray RobotMarkerGenerator::createMarkersForFrame(stri
     return markerArray;
 }
 
+void RobotMarkerGenerator::reset()
+{
+    idCounter = 0;
+}
+
 visualization_msgs::Marker RobotMarkerGenerator::createMarker(string frameId)
 {
     idCounter++; 

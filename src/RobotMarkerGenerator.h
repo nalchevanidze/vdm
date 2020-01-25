@@ -13,12 +13,13 @@ class RobotMarkerGenerator
     public:
         RobotMarkerGenerator();
         visualization_msgs::MarkerArray createMarkersForFrame(string frame, string label);
-        int idCounter;
+        void reset(); 
 
     private:
         visualization_msgs::Marker createMarker(string frameId);
         visualization_msgs::Marker createMarkerLabel(string frameId, string marker_label);
         visualization_msgs::Marker createMarkerArrow(string frameId);
+        int idCounter;
 };
 
 #endif
