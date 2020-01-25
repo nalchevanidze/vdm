@@ -3,9 +3,12 @@
 #include "RobotMarkerPublisher.h"
 
 
+
+
 RobotMarkerPublisher::RobotMarkerPublisher(string topicName, vector<robot_model::JointModelGroup*> groups) : AbstractMarkerPublisher(topicName, groups)
 {}
 
+int idCounter = 0;
 
 visualization_msgs::MarkerArray RobotMarkerPublisher::createMarkersForFrame(string frame, string label)
 {
