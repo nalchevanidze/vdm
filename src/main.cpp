@@ -51,9 +51,8 @@ int main(int argc, char** argv) {
     RobotModelTools robotModelTools;
 
     const vector<JointModelGroup*>& jointModelGroups = kinematicModel->getJointModelGroups();
-    vector<JointModelGroup*> groups = robotModelTools.getChainModelGroups(kinematicModel);
-    vector<string> jointNames = robotModelTools.allJointNames(groups);
-    
+    vector<string> jointNames = robotModelTools.getAllJointNames(kinematicModel);
+
     vector<chrono::high_resolution_clock::time_point> lastTimePoints; // chrono::high_resolution_clock::now();
     vector<vector<double>> lastCoordinates; // { 0.0, 0.0, 0.0 };
 
@@ -94,11 +93,11 @@ int main(int argc, char** argv) {
             double y = transformStamped.transform.translation.y;
             double z = transformStamped.transform.translation.z;
 
-            ROS_ERROR_STREAM("Coordinates: " << "x: " << x << ", y: " << y << ", z: " << z);
+            ROS_INFO_STREAM("Coordinates: {" << "x: " << x << ", y: " << y << ", z: " << z);
             vector<double> currentCoordinates = { x, y, z };
                 
             double velocity = calculateVelocity(currentTimePoint, currentCoordinates, lastTimePoints[jointIndex], lastCoordinates[jointIndex]);
-            ROS_ERROR_STREAM("Velocity: " << velocity);
+            ROS_INFO_STREAM("Velocity: " << velocity);
 
             lastTimePoints[jointIndex] = currentTimePoint;
             lastCoordinates[jointIndex] = currentCoordinates;

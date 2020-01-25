@@ -2,41 +2,26 @@
 #include <string>
 #include "RobotModelTools.h"
 
-vector<robot_model::JointModelGroup*> 
-RobotModelTools::getChainModelGroups(robot_model::RobotModelPtr model)
+vector<string> 
+RobotModelTools::getAllJointNames(robot_model::RobotModelPtr model)
 {
-    const vector<robot_model::JointModelGroup*> &jointModelGroups =
-        model->getJointModelGroups();
-    vector<robot_model::JointModelGroup*> chainModelGroups;
+    const vector<robot_model::JointModelGroup*> &jointModelGroups = model->getJointModelGroups();
+    vector<string> result;
 
     for (int i = 0; i < jointModelGroups.size(); i++)
     {
         robot_model::JointModelGroup *current = jointModelGroups[i];
+
         if (current->isChain())
         {
-            chainModelGroups.push_back(current);
             ROS_INFO("Found chain-model-group: %s", current->getName().c_str());
+            vector<string> jointNames = current->getLinkModelNames();
+
+            // concatenate all joints Names
+            result.insert(result.end(), jointNames.begin(), jointNames.end());
         }
     }
 
-    return chainModelGroups;
-}
-
-vector<string> 
-RobotModelTools::allJointNames(vector<robot_model::JointModelGroup*> groups)
-{
-    vector<string> jointVector;
-
-    for (int i = 0; i < groups.size(); i++)
-    {
-        robot_model::JointModelGroup *currentJointGroup = groups[i];
-        vector<string> jointNames = currentJointGroup->getLinkModelNames();
-        
-        for (int j = 0; j < jointNames.size(); j++) 
-        {
-            jointVector.push_back(jointNames[i]);
-        }
-    }
-
-    return jointVector;
+    ROS_INFO_STREAM("listed joint count: " << result.size());
+    return result;
 }
