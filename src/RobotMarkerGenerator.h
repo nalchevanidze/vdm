@@ -8,10 +8,10 @@
 
 using namespace std;
 
-class RobotMarkerPublisher 
+class RobotMarkerGenerator 
 {
     public:
-        RobotMarkerPublisher();
+        RobotMarkerGenerator();
         visualization_msgs::MarkerArray createMarkersForFrame(string frame, string label);
         int idCounter;
 

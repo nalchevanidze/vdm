@@ -10,7 +10,7 @@
 #include <geometry_msgs/TransformStamped.h>
 
 #include "RobotModelTools.h"
-#include "RobotMarkerPublisher.h"
+#include "RobotMarkerGenerator.h"
 #include "sensor_msgs/JointState.h"
 
 using namespace std;
@@ -44,7 +44,7 @@ int main(int argc, char** argv) {
 
 
     auto publisher = n.advertise<visualization_msgs::MarkerArray>("/vdm_markers", 0);
-    RobotMarkerPublisher markerGenerator = RobotMarkerPublisher();
+    RobotMarkerGenerator markerGenerator = RobotMarkerGenerator();
 
 
     RobotModelLoader robotModelLoader("robot_description");

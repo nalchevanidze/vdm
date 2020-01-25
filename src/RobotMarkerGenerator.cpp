@@ -1,14 +1,14 @@
 #include <moveit/robot_model/robot_model.h>
 
-#include "RobotMarkerPublisher.h"
+#include "RobotMarkerGenerator.h"
 
 
-RobotMarkerPublisher::RobotMarkerPublisher()
+RobotMarkerGenerator::RobotMarkerGenerator()
 {}
 
 int idCounter = 0;
 
-visualization_msgs::MarkerArray RobotMarkerPublisher::createMarkersForFrame(string frame, string label)
+visualization_msgs::MarkerArray RobotMarkerGenerator::createMarkersForFrame(string frame, string label)
 {
     visualization_msgs::MarkerArray markerArray;
     markerArray.markers.push_back(createMarkerLabel(frame, label));
@@ -16,7 +16,7 @@ visualization_msgs::MarkerArray RobotMarkerPublisher::createMarkersForFrame(stri
     return markerArray;
 }
 
-visualization_msgs::Marker RobotMarkerPublisher::createMarker(string frameId)
+visualization_msgs::Marker RobotMarkerGenerator::createMarker(string frameId)
 {
 
     visualization_msgs::Marker marker;
@@ -46,7 +46,7 @@ visualization_msgs::Marker RobotMarkerPublisher::createMarker(string frameId)
     return marker;
 }
 
-visualization_msgs::Marker RobotMarkerPublisher::createMarkerLabel(string frameId, string marker_label)
+visualization_msgs::Marker RobotMarkerGenerator::createMarkerLabel(string frameId, string marker_label)
 {
     visualization_msgs::Marker marker;
 
@@ -62,7 +62,7 @@ visualization_msgs::Marker RobotMarkerPublisher::createMarkerLabel(string frameI
     return marker;
 }
 
-visualization_msgs::Marker RobotMarkerPublisher::createMarkerArrow(string frameId)
+visualization_msgs::Marker RobotMarkerGenerator::createMarkerArrow(string frameId)
 {
     visualization_msgs::Marker marker;
 

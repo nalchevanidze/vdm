@@ -20,7 +20,7 @@ catkin_package(
 add_executable(main 
     src/main.cpp
     src/RobotModelTools.cpp
-    src/RobotMarkerPublisher.cpp
+    src/RobotMarkerGenerator.cpp
 )
 
 target_link_libraries(main ${catkin_LIBRARIES})
