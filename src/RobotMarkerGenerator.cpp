@@ -18,22 +18,21 @@ visualization_msgs::MarkerArray RobotMarkerGenerator::createMarkersForFrame(stri
 
 visualization_msgs::Marker RobotMarkerGenerator::createMarker(string frameId)
 {
+    idCounter++; 
 
     visualization_msgs::Marker marker;
 
+    marker.id = idCounter;
     marker.header.frame_id = frameId;
-
     marker.header.stamp = ros::Time();
     marker.ns = "stats";
-
-    idCounter++; 
-    
-    marker.id = idCounter;
 
     marker.action = visualization_msgs::Marker::ADD;
     // marker.pose.position.x = 1;
     // marker.pose.position.y = 1;
     // marker.pose.position.z = 1;
+
+    TODO: set orientation by velocity direction
     // marker.pose.orientation.x = 0.0;
     // marker.pose.orientation.y = 0.0;
     // marker.pose.orientation.z = 0.0;

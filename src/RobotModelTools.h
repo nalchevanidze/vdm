@@ -13,6 +13,8 @@ class RobotModelTools
 public:
     vector<robot_model::JointModelGroup*> 
     getChainModelGroups(robot_model::RobotModelPtr model);
+    // TODO: get vector of al joints by robot_model
+    // allJoints(robot_model::RobotModelPtr model);
 };
 
 #endif
