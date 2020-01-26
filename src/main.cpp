@@ -4,8 +4,6 @@
 
 #include <ros/ros.h>
 
-#include <moveit/move_group_interface/move_group_interface.h>
-
 #include <tf2_ros/transform_listener.h>
 #include <geometry_msgs/TransformStamped.h>
 
@@ -15,10 +13,6 @@
 #include "sensor_msgs/JointState.h"
 
 using namespace std;
-using namespace robot_model;
-using namespace robot_model_loader;
-using namespace robot_state;
-
 
 ros::Publisher markerPublisher;
 
@@ -48,10 +42,8 @@ int main(int argc, char** argv) {
     tf2_ros::TransformListener tfListener(tfBuffer);
 
     // list all joints
-    RobotModelLoader robotModelLoader("robot_description");
-    RobotModelPtr kinematicModel = robotModelLoader.getModel();
     RobotModelTools robotModelTools;
-    vector<string> jointNames = robotModelTools.getAllJointNames(kinematicModel);
+    vector<string> jointNames = robotModelTools.getAllJointNames();
 
     // publish velocities for all joint
     markerPublisher = 

@@ -5,6 +5,7 @@
 #include <moveit/robot_model_loader/robot_model_loader.h>
 #include <moveit/robot_model/robot_model.h>
 #include <moveit/robot_state/robot_state.h>
+#include <moveit/move_group_interface/move_group_interface.h>
 
 using namespace std;
 
@@ -14,7 +15,7 @@ class RobotModelTools
 public:
     /// Returns a vector of all the joint's names contained in the given robot-
     /// model.
-    vector<string> getAllJointNames(robot_model::RobotModelPtr model);
+    vector<string> getAllJointNames();
 };
 
 #endif
