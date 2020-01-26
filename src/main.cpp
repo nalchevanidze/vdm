@@ -29,7 +29,12 @@ RobotMarkerGenerator markerGenerator;
 void onVelocityCalculated(string jointName, double velocity)
 {
     visualization_msgs::MarkerArray markerArray =
-        markerGenerator.createVelocityMarkers(jointName, velocity);
+        markerGenerator.createVelocityMarkers(
+            jointName,
+            "Velocity",
+            velocity,
+            "m/s"
+        );
     
     markerPublisher.publish(markerArray);
 }

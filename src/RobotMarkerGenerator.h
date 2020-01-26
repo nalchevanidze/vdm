@@ -21,14 +21,14 @@ class RobotMarkerGenerator
         /// Creates a marker array that visualizes the given velocity in form
         /// of an arrow and a text-label.
         ///
-        /// The text simply displays the given value.
+        /// The text displays the given value, it's label and unit.
         /// The arrow-shaped marker visualizes the value and varies in size
         /// depending on the value.
-        ///
-        /// TODO: Pass in additional prameters for the name and unit.
         visualization_msgs::MarkerArray createVelocityMarkers(
             string frameId, 
-            double value
+            string label,
+            double velocity,
+            string unit
         );
 
     private:
@@ -54,8 +54,11 @@ class RobotMarkerGenerator
             string marker_label
         );
 
-        /// Creates an arrow-shaped marker.
-        visualization_msgs::Marker createMarkerArrow(string frameId);
+        /// Creates an arrow-shaped marker 
+        visualization_msgs::Marker createMarkerArrow(
+            string frameId, 
+            double velocity
+        );
 };
 
 #endif
