@@ -49,7 +49,7 @@ void JointVelocityCalculator::startListening()
 
             // invoke callback function
 
-            // TODO: Invoke callback function
+            this->onVelocityCalculated(currentJointName, velocity);
         }
         rate.sleep();
     }

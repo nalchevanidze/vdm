@@ -18,12 +18,26 @@ using namespace std;
 using namespace robot_model;
 using namespace robot_model_loader;
 using namespace robot_state;
-using namespace ros;
+
+
+ros::Publisher markerPublisher;
+
+// TODO: Rename to *Factory
+RobotMarkerGenerator markerGenerator;
+
+
+void onVelocityCalculated(string jointName, double velocity)
+{
+    visualization_msgs::MarkerArray markerArray =
+        markerGenerator.createVelocityMarkers(jointName, velocity);
+    
+    markerPublisher.publish(markerArray);
+}
 
 
 int main(int argc, char** argv) {
     ros::init(argc, argv, "jacobian_calculator");
-    ros::NodeHandle n;
+    ros::NodeHandle nodeHandle;
 
     tf2_ros::Buffer tfBuffer;
     tf2_ros::TransformListener tfListener(tfBuffer);
@@ -35,9 +49,11 @@ int main(int argc, char** argv) {
     vector<string> jointNames = robotModelTools.getAllJointNames(kinematicModel);
 
     // publish velocities for all joint
-    auto publisher = n.advertise<visualization_msgs::MarkerArray>("/vdm_markers", 0);
-    RobotMarkerGenerator markerGenerator = RobotMarkerGenerator();
+    markerPublisher = 
+        nodeHandle.advertise<visualization_msgs::MarkerArray>("/vdm_markers", 0);
+    markerGenerator = RobotMarkerGenerator();
 
-    JointVelocityCalculator vcalc(&n, &tfBuffer, &jointNames, NULL);
+    JointVelocityCalculator vcalc(
+        &nodeHandle, &tfBuffer, &jointNames, &onVelocityCalculated);
     vcalc.startListening();
 }

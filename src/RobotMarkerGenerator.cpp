@@ -1,4 +1,5 @@
 #include <string>
+#include <unordered_map>
 
 #include <moveit/robot_model/robot_model.h>
 
@@ -8,7 +9,6 @@
 RobotMarkerGenerator::RobotMarkerGenerator()
 {}
 
-int idCounter = 0;
 
 visualization_msgs::MarkerArray RobotMarkerGenerator::createVelocityMarkers(string frameId, double value)
 {
@@ -20,18 +20,21 @@ visualization_msgs::MarkerArray RobotMarkerGenerator::createVelocityMarkers(stri
     return markerArray;
 }
 
-void RobotMarkerGenerator::reset()
+
+int RobotMarkerGenerator::generateIdFromJointName(string jointName)
 {
-    idCounter = 0;
+    hash<string> hasher;
+    size_t hash = hasher(jointName);
+    int id = static_cast<int>(hash);
+    return id;
 }
+
 
 visualization_msgs::Marker RobotMarkerGenerator::createMarker(string frameId)
 {
-    idCounter++; 
-
     visualization_msgs::Marker marker;
 
-    marker.id = idCounter;
+    marker.id = generateIdFromJointName(frameId);
     marker.header.frame_id = frameId;
     marker.header.stamp = ros::Time();
     marker.ns = "stats";
@@ -61,6 +64,8 @@ visualization_msgs::Marker RobotMarkerGenerator::createMarkerLabel(string frameI
     marker = createMarker(frameId);
     marker.type = visualization_msgs::Marker::TEXT_VIEW_FACING;
 
+    marker.id = marker.id + 1000;
+
     marker.text = marker_label;
 
     marker.scale.x = 0.1;
@@ -76,6 +81,8 @@ visualization_msgs::Marker RobotMarkerGenerator::createMarkerArrow(string frameI
 
     marker = createMarker(frameId);
     marker.type = visualization_msgs::Marker::ARROW;
+
+    marker.id = marker.id + 2000;
 
     marker.scale.x = 0.1;
     marker.scale.y = 0.03;
