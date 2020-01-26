@@ -8,9 +8,6 @@
 #include <moveit/move_group_interface/move_group_interface.h>
 
 using namespace std;
-using namespace robot_model;
-using namespace robot_model_loader;
-using namespace robot_state;
 
 /// A tool class containing helpful robot-model-related functions.
 class RobotModelTools
