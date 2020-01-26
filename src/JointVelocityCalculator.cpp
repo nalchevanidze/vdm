@@ -18,60 +18,104 @@ JointVelocityCalculator::JointVelocityCalculator(
 
 void JointVelocityCalculator::startListening()
 {
-    // init velocities,cordinates for each joint
-    vector<chrono::high_resolution_clock::time_point> lastTimePoints; // chrono::high_resolution_clock::now();
-    vector<vector<double>> lastCoordinates; // { 0.0, 0.0, 0.0 };
-    // fill initialize times and positions
-    // TODO: Use vector constructor to initialize
-    for (int j = 0; j < this->jointNames->size(); j++) 
-    {
-        lastTimePoints.push_back(chrono::high_resolution_clock::now());
-        vector<double> dummyCoordninates = { 0.0, 0.0, 0.0 };
-        lastCoordinates.push_back(dummyCoordninates);
-    }
+    const int jointNamesSize = this->jointNames->size();
+
+    // Store the previously received values for each joint in a vector
+    //
+    // The joint's value is referenced via it's index in the list of all joints
+    // that has been provided via the constructor.
+    //
+    // Since the previous values don't exist on the first iteration both vectors
+    // are initialized with default values.
+    vector<timepoint_t> lastTimePoints(
+        jointNamesSize, chrono::high_resolution_clock::now());
+    vector<coordinates_t> lastCoordinates(jointNamesSize, { 0.0, 0.0, 0.0 });
    
-    // // publish velocities for all joint
-    // auto publisher = n.advertise<visualization_msgs::MarkerArray>("/vdm_markers", 0);
-    // RobotMarkerGenerator markerGenerator = RobotMarkerGenerator();
     
     ros::Rate rate(10.0);
     while (this->nodeHandle->ok())
     {
-        // update Positions
         for (int i = 0; i < this->jointNames->size(); i++) 
         {
-            // Vector-pointer needs to be dereferenced:
-            string name = (*this->jointNames)[i]; 
-            ROS_WARN_STREAM("Name: " << name);
+            const string currentJointName = (*this->jointNames)[i];
 
-            timepoint_t currentTimePoint = chrono::high_resolution_clock::now();
 
-            geometry_msgs::TransformStamped transformStamped;
-            try
-            {
-                transformStamped = this->tfBuffer->lookupTransform("base_link", name, ros::Time(0));
-            }
-            catch (tf2::TransformException &ex)
-            {
-                ROS_WARN("%s",ex.what());
-                ros::Duration(1.0).sleep();
-                continue;
-            }
+            double velocity = getVelocityForJoint(
+                currentJointName,
+                &lastTimePoints[i],
+                &lastCoordinates[i]
+            );
 
-            vector<double> currentCoordinates = transformStampedToPos(transformStamped);    
-            double velocity = calculateVelocity(currentTimePoint, currentCoordinates, lastTimePoints[i], lastCoordinates[i]);
-            ROS_INFO_STREAM("Velocity: " << velocity);
 
-            lastTimePoints[i] = currentTimePoint;
-            lastCoordinates[i] = currentCoordinates;
+            // invoke callback function
 
-            // publisher.publish(markerGenerator.createVelocityMarkers(name, velocity));
+            // TODO: Invoke callback function
         }
         rate.sleep();
     }
 }
 
+double JointVelocityCalculator::getVelocityForJoint(
+    string jointName, 
+    timepoint_t *timePointBuffer,
+    coordinates_t *coordinatesBuffer
+)
+{
+    // Receive current time-point and joint-coordinates
 
+    geometry_msgs::TransformStamped transformStamped;
+    try
+    {
+        transformStamped = this->tfBuffer->lookupTransform(
+            "base_link", 
+            jointName, 
+            ros::Time(0)
+        );
+    }
+    catch (tf2::TransformException &ex)
+    {
+        ROS_WARN(
+            "tf2: unable to get transform of joint '%s':\n%s", 
+            jointName.c_str(), 
+            ex.what()
+        );
+        return 0.0;
+    }
+
+    timepoint_t currentTimePoint = chrono::high_resolution_clock::now();
+    coordinates_t currentCoordinates = 
+        transformStampedToCoordinates(transformStamped);
+
+
+    // Calculate velocity
+
+    double velocity = calculateVelocity(
+        currentTimePoint, 
+        currentCoordinates, 
+        *timePointBuffer, 
+        *coordinatesBuffer
+    );
+
+
+    // Log current values:
+
+    ROS_WARN_STREAM("Joint: " << jointName);
+    ROS_INFO_STREAM(
+        "Coordinates: { x: " << currentCoordinates[0] <<
+        ", y: " << currentCoordinates[1] <<
+        ", z: " << currentCoordinates[2] << " }"
+    );
+    ROS_INFO_STREAM("Velocity: " << velocity << " m/ms\n");
+
+
+    // Update previous values
+
+    *timePointBuffer = currentTimePoint;
+    *coordinatesBuffer = currentCoordinates;
+}
+
+
+// TODO: Change result to m/s over m/ms
 double JointVelocityCalculator::calculateVelocity(
     timepoint_t t1, 
     vector<double> pos1, 
@@ -88,13 +132,12 @@ double JointVelocityCalculator::calculateVelocity(
 }
 
 
-vector<double> JointVelocityCalculator::transformStampedToPos(
+coordinates_t JointVelocityCalculator::transformStampedToCoordinates(
     geometry_msgs::TransformStamped msg
 )
 {
     double x = msg.transform.translation.x;
     double y = msg.transform.translation.y;
     double z = msg.transform.translation.z;
-    ROS_INFO_STREAM("Coordinates: {" << "x: " << x << ", y: " << y << ", z: " << z << "}");
     return { x, y, z };
 }

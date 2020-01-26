@@ -15,6 +15,8 @@ using namespace std;
 
 typedef chrono::high_resolution_clock::time_point timepoint_t;
 
+typedef vector<double> coordinates_t;
+
 
 /// A listener that can be attached to a tf2-Buffer in order to calculate each
 /// joint's velocity from the incoming positions.
@@ -54,17 +56,35 @@ private:
     void (*onVelocityCalculated)(string, double);
 
 
+    /// Retrieves the current joint's position and calculates it's velocity
+    /// using the values from the respective buffers.
+    ///
+    /// The time-point-buffer is used to hold the time-point from the last 
+    /// calculation, which is necessary to be able to calculate the velocity.
+    /// The coordinates-buffer works the same way but for the last coordinates.
+    ///
+    /// Important: Both buffers need to hold a valid value at all times!
+    /// Initialize them with default values if necessary.
+    double getVelocityForJoint(
+        string jointName, 
+        timepoint_t *timePointBuffer,
+        coordinates_t *coordinatesBuffer
+    );
+
+
     /// Converts a TransformStamped object into a three-dimenional vector
     /// containing the respective x, y and z values.
-    vector<double> transformStampedToPos(geometry_msgs::TransformStamped msg);
+    coordinates_t transformStampedToCoordinates(
+        geometry_msgs::TransformStamped msg
+    );
 
     /// Calculates a joint's velocity from two given time points and position 
     /// vectors.
     double calculateVelocity(
         timepoint_t t1, 
-        vector<double> pos1, 
+        coordinates_t pos1, 
         timepoint_t t2, 
-        vector<double> pos2
+        coordinates_t pos2
     );
 };
 
