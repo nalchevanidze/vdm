@@ -1,25 +1,64 @@
 #ifndef ROBOT_MARKER_PUBLISHER_H
 #define ROBOT_MARKER_PUBLISHER_H
 
+
 #include <string>
 
 #include <ros/ros.h>
 #include <moveit/move_group_interface/move_group_interface.h>
 
+
 using namespace std;
 
+
+/// This class can be used to generate markers to be displayed in rviz.
 class RobotMarkerGenerator 
 {
     public:
+        /// Constructor
         RobotMarkerGenerator();
-        visualization_msgs::MarkerArray create(string name, string value);
-        void reset(); 
+
+        /// Creates a marker array that visualizes the given velocity in form
+        /// of an arrow and a text-label.
+        ///
+        /// The text displays the given value, it's label and unit.
+        /// The arrow-shaped marker visualizes the value and varies in size
+        /// depending on the value.
+        visualization_msgs::MarkerArray createVelocityMarkers(
+            string frameId, 
+            string label,
+            double velocity,
+            string unit
+        );
 
     private:
+        /// Generates an id from a given joint-name
+        ///
+        /// This function works similarly to a hash function in a way that the
+        /// same joint-name will always produce the same id.
+        ///
+        /// This way the visualization marker for a joint can easily be updated
+        /// since a new marker array can be created just by calling 
+        /// 'createVelocityMarkers()' and publishing the marker-array again.
+        int generateIdFromJointName(string jointName);
+        
+        /// Creates a bare-bones marker attached to the given frame.
+        ///
+        /// This raw marker can then be further customized.
         visualization_msgs::Marker createMarker(string frameId);
-        visualization_msgs::Marker createMarkerLabel(string frameId, string marker_label);
-        visualization_msgs::Marker createMarkerArrow(string frameId);
-        int idCounter;
+
+        /// Creates a text-label-marker attached to the given frame, displaying 
+        /// the given message.
+        visualization_msgs::Marker createMarkerLabel(
+            string frameId, 
+            string marker_label
+        );
+
+        /// Creates an arrow-shaped marker 
+        visualization_msgs::Marker createMarkerArrow(
+            string frameId, 
+            double velocity
+        );
 };
 
 #endif

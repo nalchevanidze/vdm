@@ -19,6 +19,7 @@ catkin_package(
 
 add_executable(main 
     src/main.cpp
+    src/JointVelocityCalculator.cpp
     src/RobotModelTools.cpp
     src/RobotMarkerGenerator.cpp
 )
