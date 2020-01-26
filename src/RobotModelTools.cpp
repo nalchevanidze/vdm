@@ -9,7 +9,6 @@ RobotModelTools::getAllJointNames()
     RobotModelLoader robotModelLoader("robot_description");
     RobotModelPtr kinematicModel = robotModelLoader.getModel();
     
-
     const vector<robot_model::JointModelGroup*> &jointModelGroups = kinematicModel->getJointModelGroups();
     vector<string> result;
 
