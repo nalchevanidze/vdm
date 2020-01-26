@@ -99,19 +99,25 @@ double JointVelocityCalculator::getVelocityForJoint(
 
     // Log current values:
 
-    ROS_WARN_STREAM("Joint: " << jointName);
-    ROS_INFO_STREAM(
-        "Coordinates: { x: " << currentCoordinates[0] <<
-        ", y: " << currentCoordinates[1] <<
-        ", z: " << currentCoordinates[2] << " }"
-    );
-    ROS_INFO_STREAM("Velocity: " << velocity << " m/ms\n");
+    if (velocity != 0.0) {
+        ROS_WARN_STREAM("Joint: " << jointName);
+        ROS_INFO_STREAM(
+            "Coordinates: { x: " << currentCoordinates[0] <<
+            ", y: " << currentCoordinates[1] <<
+            ", z: " << currentCoordinates[2] << " }"
+        );
+        ROS_INFO_STREAM("Velocity: " << velocity << " m/ms\n");
+    }
 
 
     // Update previous values
 
     *timePointBuffer = currentTimePoint;
     *coordinatesBuffer = currentCoordinates;
+
+
+    // Return current velocity
+    return velocity;
 }
 
 
