@@ -106,7 +106,7 @@ double JointVelocityCalculator::getVelocityForJoint(
             ", y: " << currentCoordinates[1] <<
             ", z: " << currentCoordinates[2] << " }"
         );
-        ROS_INFO_STREAM("Velocity: " << velocity << " m/ms\n");
+        ROS_INFO_STREAM("Velocity: " << velocity << " m/s\n");
     }
 
 
@@ -121,7 +121,6 @@ double JointVelocityCalculator::getVelocityForJoint(
 }
 
 
-// TODO: Change result to m/s over m/ms
 double JointVelocityCalculator::calculateVelocity(
     timepoint_t t1, 
     vector<double> pos1, 
@@ -134,7 +133,7 @@ double JointVelocityCalculator::calculateVelocity(
     chrono::duration<double, std::milli> timeDiff = t1 - t2;
 
     // v = s / t
-    return (distance / (timeDiff.count()));
+    return (distance / (timeDiff.count())) * 1000;
 }
 
 
